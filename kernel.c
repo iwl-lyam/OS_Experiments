@@ -13,8 +13,9 @@ void print(char* first, int len, int offset) {
 extern int main() {
     char str[] = "Hello world!";
     print(&str[0], 12, 0);
-	idt_init(); 
-      print("\r\nInterrupts enabled now, hopefully!",36,13);	
+	idt_init();
+    str = " Interrupts enabled now, hopefully!"
+      print(str,sizeof(str),13);
     return 0;
 }
 
