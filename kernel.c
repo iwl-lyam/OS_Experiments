@@ -13,7 +13,7 @@ void print(char* first, int len, int offset) {
 extern int main() {
 	idt_init();
     char str[] = "Working with interrupts";
-    print(&str[0], sizeof(str), 0)
+    print(&str[0], sizeof(str), 0);
     return 0;
 }
 
