@@ -1,0 +1,5 @@
+cmake-build-debug
+cmakelists.txt
+*.bin
+*.o
+*log.txt
