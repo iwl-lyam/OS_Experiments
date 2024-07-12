@@ -3,3 +3,5 @@ cmakelists.txt
 *.bin
 *.o
 *log.txt
+.idea
+clion-Debug-log.txt
