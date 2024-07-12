@@ -15,7 +15,7 @@ __attribute__((aligned(0x10)))
 static idt_entry_t idt[256];
 static idtr_t idtr;
 
-//__attribute__((noreturn))
+__attribute__((noreturn))
 //extern void exception_handler(void);
 extern void exception_handler() {
     __asm__ volatile ("cli; hlt"); // Completely hangs the computer
