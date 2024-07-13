@@ -1,51 +1,42 @@
-typedef struct {
-	unsigned short    isr_low;      // The lower 16 bits of the ISR's address
-	unsigned short    kernel_cs;    // The GDT segment selector that the CPU will load into CS before calling the ISR
-	unsigned int     reserved;     // Set to zero
-	unsigned int     attributes;   // Type and attributes; see the IDT page
-	unsigned short    isr_high;     // The higher 16 bits of the ISR's address
-} __attribute__((packed)) idt_entry_t;
+#include "idt.h"
+#include <stdint.h>
+#include "binary.h"
 
 typedef struct {
-	unsigned short limit;
-	unsigned long base;
-}__attribute__((packed)) idtr_t;
+    uint16_t BaseLow;
+    uint16_t SegmentSelector;
+    uint8_t Reserved;
+    uint8_t Flags;
+    uint16_t BaseHigh;
+} __attribute__((packed)) IDTEntry;
 
-__attribute__((aligned(0x10)))
-static idt_entry_t idt[256];
-static idtr_t idtr;
+typedef struct {
+    uint16_t Limit;
+    IDTEntry* Ptr;
+} __attribute__((packed)) IDTDescriptor;
 
-__attribute__((noreturn))
-//extern void exception_handler(void);
-extern void exception_handler() {
-    __asm__ volatile ("cli; hlt"); // Completely hangs the computer
+IDTEntry g_IDT[256];
+IDTDescriptor  g_IDTDescriptor = { sizeof(g_IDT) - 1, g_IDT };
+
+void __attribute__((cdecl)) i686_IDT_Load(IDTDescriptor* idtDescriptor);
+
+void i686_IDT_SetGate(int interrupt, void* base, uint16_t segmentDescriptor, uint8_t flags) {
+    g_IDT[interrupt].BaseLow = ((uint32_t)base) & 0xFFFF;
+    g_IDT[interrupt].SegmentSelector = segmentDescriptor;
+    g_IDT[interrupt].Reserved = 0;
+    g_IDT[interrupt].Flags = flags
+    g_IDT[interrupt].BaseHigh = ((uint32_t)base >> 16) & 0xFFFF;
+
 }
 
-void idt_set_descriptor(unsigned int vector, void* isr, unsigned int flags);
-void idt_set_descriptor(unsigned int vector, void* isr, unsigned int flags) {
-    idt_entry_t* descriptor = &idt[vector];
-
-    descriptor->isr_low        = (unsigned long)isr & 0xFFFF;
-    descriptor->kernel_cs      = 0x08; // this value can be whatever offset your kernel code selector is in your GDT
-    descriptor->attributes     = flags;
-    descriptor->isr_high       = (unsigned long)isr >> 16;
-    descriptor->reserved       = 0;
+void i686_IDT_EnableGate(int interrupt) {
+    FLAG_SET(g_IDT[interrupt].Flags, IDT_FLAG_PRESENT)
 }
 
-static int vectors[256];
+void i686_IDT_DisableGate(int interrupt) {
+    FLAG_UNSET(g_IDT[interrupt].Flags, IDT_FLAG_PRESENT)
+}
 
-extern void* isr_stub_table[];
-
-void idt_init(void);
-void idt_init() {
-    idtr.base = (unsigned long)&idt[0];
-    idtr.limit = (unsigned short)(sizeof(idt_entry_t) * 256 - 1);
-
-    for (unsigned int vector = 0; vector < 32; vector++) {
-        idt_set_descriptor(vector, isr_stub_table[vector], 0x8E);
-        vectors[vector] = 1;
-    }
-
-    __asm__ volatile ("lidt %0" : : "m"(idtr)); // load the new IDT
-    __asm__ volatile ("sti"); // set the interrupt flag
+void i686_IDT_Initialise() {
+    i686_IDT_Load(&g_IDTDescriptor);
 }
