@@ -17,7 +17,7 @@ i686_ISR%1:
     jmp isr_common
 %endmacro
 
-%include "isrs_gen.inc
+%include "isrs_gen.inc"
 
 isr_common:
     pusha
