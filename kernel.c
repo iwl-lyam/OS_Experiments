@@ -1,11 +1,11 @@
 #include "idt.h"
 
-void print_char(char c, int pos, char colour) {
+void print_char(char c, int pos, int colour) {
 	*(char*)(0xb8000+pos*2) = c;
     *(char*)(0xb8001+pos*2) = colour;
 }
 
-void print(char* first, int len, int offset, char colour) {
+void print(char* first, int len, int offset, int colour) {
 	for (int i = 0; i<len; i++) {
 		print_char(*(first+i), offset+i, colour);
 	}
