@@ -22,6 +22,8 @@ void print(char* first, int len, int colour) {
             cursor_y += 1;
             cursor_x = 0;
             i++;
+        } else if (*(first+i) == 0x0) {
+            continue;
         }
 		print_char(*(first+i), colour);
 	}
