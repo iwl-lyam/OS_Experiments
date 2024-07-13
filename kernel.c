@@ -28,7 +28,7 @@ extern int main() {
     print(&str[0], sizeof(str), 0x0f);
     char str2[] = " -from protected mode (VGA framebuffer)";
     print(&str2[0], sizeof(str2), 0x04);
-    char str3[] = "aaaaaaaaaaaaabbbbbbbbbbbbbbaaaaaaaaaaaaaa";
+    char str3[] = "aaaaaaaaaaabbbbbbbbb";
     print(&str3[0], sizeof(str3), 0x0f);
     return 0;
 }
