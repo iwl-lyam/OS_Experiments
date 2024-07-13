@@ -16,7 +16,7 @@ extern int main() {
     char str[] = "Hello, world!";
     print(&str[0], sizeof(str), 0, 0x0f);
     char str2[] = " -from protected mode";
-    print(%str2[0], sizeof(str2), len(str), 0x04);
+    print(&str2[0], sizeof(str2), len(str), 0x04);
     return 0;
 }
 
