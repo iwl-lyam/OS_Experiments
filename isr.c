@@ -10,6 +10,8 @@ void i686_ISR_Initialize() {
 }
 
 void __attribute__((cdecl)) i686_ISR_Handler(Registers* regs) {
-    char interrupt[] = "\nInterrupt\n"+(char[])(regs->interrupt);
+//    char interrupt[] = "\nInterrupt\n"+(char)(regs->interrupt);
+    char interrupt[] = "\nInterrupt";
     print(&interrupt[0], sizeof(interrupt), 0x04);
+    print(&(regs->interrupt),sizeof(regs->interrupt),0x04);
 }
