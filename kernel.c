@@ -30,7 +30,7 @@ void print(char* first, int len, int colour) {
 }
 
 extern int main() {
-//	idt_init();
+	idt_init();
     char str[] = "Hello, world!";
     print(&str[0], sizeof(str), 0x0f);
     char str2[] = " -from protected mode (VGA framebuffer)\n";
