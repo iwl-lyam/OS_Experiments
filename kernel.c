@@ -6,11 +6,11 @@ int cursor_x = 0;
 int cursor_y = 0;
 
 void print_char(char c, int colour) {
-	*(char*)(0xb8000+cursor_x*2+cursor_y*LINECHARS) = c;
+	*(char*)(0xb8000+cursor_x*2+2*cursor_y*LINECHARS) = c;
     *(char*)(0xb8001+cursor_x*2+cursor_y*LINECHARS) = colour;
 
     cursor_x += 1;
-    if (cursor_x > LINECHARS) {
+    if (cursor_x >= LINECHARS) {
         cursor_y += 1;
         cursor_x = 0;
     }
