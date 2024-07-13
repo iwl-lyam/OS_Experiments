@@ -12,6 +12,11 @@ printLoop:
     jmp printLoop
 end:
 
+mov ah, 0x86      ; BIOS wait function
+mov cx, 0x000F    ; High word of 1,000,000 microseconds
+mov dx, 0x4240    ; Low word of 1,000,000 microseconds
+int 0x15          ; Call BIOS interrupt
+
 KERNEL_LOCATION equ 0x1000
 
 mov [BOOT_DISK], dl
