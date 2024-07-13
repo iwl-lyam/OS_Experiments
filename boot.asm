@@ -12,11 +12,20 @@ printLoop:
     jmp printLoop
 end:
 
-mov al, 0
-mov ah, 0x86      ; BIOS wait function
-mov cx, 0x000F    ; High word of 1,000,000 microseconds
-mov dx, 0x4240    ; Low word of 1,000,000 microseconds
-int 0x15          ; Call BIOS interrupt
+start:
+    cli                 ; Clear interrupts
+    xor ax, ax          ; AX = 0 (used to get the tick count)
+    int 0x1A            ; Call BIOS service to get the tick count
+    mov bx, dx          ; Save initial tick count in BX
+    add bx, 18          ; Add approximately 18 ticks for a 1-second delay
+
+wait_loop:
+    xor ax, ax          ; AX = 0 (used to get the tick count)
+    int 0x1A            ; Call BIOS service to get the tick count
+    cmp dx, bx          ; Compare current tick count with BX
+    jb wait_loop        ; If current tick count is less, keep waiting
+
+    sti                 ; Restore interrupts
 
 KERNEL_LOCATION equ 0x1000
 
