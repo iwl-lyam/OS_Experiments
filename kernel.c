@@ -18,7 +18,7 @@ void print_char(char c, int colour) {
 
 void print(char* first, int len, int colour) {
 	for (int i = 0; i<len; i++) {
-        if (*(first+i) == 0x10) {
+        if (*(first+i) == 0xA) {
             cursor_y += 1;
             cursor_x = 0;
             i++;
