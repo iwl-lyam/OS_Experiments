@@ -17,19 +17,11 @@ void print_char(char c, int colour) {
 }
 
 void print(char* first, int len, int colour) {
-    int escape = 0;
 	for (int i = 0; i<len; i++) {
-        if (escape == 1) {
-            escape = 0;
-            continue;
-        }
-        if (*(first+i) == '\\') {
-            if (*(first+i+1) == 'n') {
-                cursor_y += 1;
-                cursor_x = 0;
-                escape = 1;
-                continue;
-            }
+        if ((*(first+i) == '\\') && (*(first+i+1) == 'n')) {
+            cursor_y += 1;
+            cursor_x = 0;
+            i += 2;
         }
 		print_char(*(first+i), colour);
 	}
@@ -41,7 +33,7 @@ extern int main() {
     print(&str[0], sizeof(str), 0x0f);
     char str2[] = " -from protected mode (VGA framebuffer)\n";
     print(&str2[0], sizeof(str2), 0x04);
-    char str3[] = "aaaaaaaaaaabbbbbbbbbcccccccccccc";
+    char str3[] = "test string 3";
     print(&str3[0], sizeof(str3), 0x0f);
     return 0;
 }
