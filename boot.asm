@@ -12,21 +12,6 @@ printLoop:
     jmp printLoop
 end:
 
-start:
-    cli                 ; Clear interrupts
-    xor ax, ax          ; AX = 0 (used to get the tick count)
-    int 0x1A            ; Call BIOS service to get the tick count
-    mov bx, dx          ; Save initial tick count in BX
-    add bx, 18          ; Add approximately 18 ticks for a 1-second delay
-
-wait_loop:
-    xor ax, ax          ; AX = 0 (used to get the tick count)
-    int 0x1A            ; Call BIOS service to get the tick count
-    cmp dx, bx          ; Compare current tick count with BX
-    jb wait_loop        ; If current tick count is less, keep waiting
-
-    sti                 ; Restore interrupts
-
 KERNEL_LOCATION equ 0x1000
 
 mov [BOOT_DISK], dl
@@ -48,6 +33,21 @@ mov cl, 0x02
 mov dl, [BOOT_DISK]
 int 0x13
 
+start:
+    cli                 ; Clear interrupts
+    xor ax, ax          ; AX = 0 (used to get the tick count)
+    int 0x1A            ; Call BIOS service to get the tick count
+    mov bx, dx          ; Save initial tick count in BX
+    add bx, 18          ; Add approximately 18 ticks for a 1-second delay
+
+wait_loop:
+    xor ax, ax          ; AX = 0 (used to get the tick count)
+    int 0x1A            ; Call BIOS service to get the tick count
+    cmp dx, bx          ; Compare current tick count with BX
+    jb wait_loop        ; If current tick count is less, keep waiting
+
+    sti                 ; Restore interrupts
+
 mov ah, 0x0
 mov al, 0x3
 int 0x10
@@ -57,6 +57,7 @@ DATA_SEG equ data_descriptor - GDT_Start
 
 cli
 lgdt [GDT_Descriptor]
+
 mov eax, cr0
 or eax,1
 mov cr0,eax ; NOW IN PM
