@@ -1,5 +1,17 @@
 [org 0x7c00]
 
+mov ah,0x0E
+mov bx,msg
+
+printLoop:
+    mov al, [bx]
+    cmp al, 0
+    je end
+    int 0x10
+    inc bx
+    jmp printLoop
+end:
+
 KERNEL_LOCATION equ 0x1000
 
 mov [BOOT_DISK], dl
@@ -79,6 +91,8 @@ start_protected_mode:
     mov esp, ebp
 
     jmp KERNEL_LOCATION
+
+msg: db "Hello, world! -from Real mode",0
 
 times 510-($-$$) db 0
 db 0x55, 0xAA

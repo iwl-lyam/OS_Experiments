@@ -12,7 +12,7 @@ void print(char* first, int len, int offset) {
 
 extern int main() {
 //	idt_init();
-    char str[] = "Hello, world!";
+    char str[] = "Hello, world! -from protected mode";
     print(&str[0], sizeof(str), 0);
     return 0;
 }
