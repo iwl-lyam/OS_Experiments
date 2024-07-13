@@ -1,6 +1,6 @@
 #include "idt.h"
-
-#define LINECHARS 80
+#include "kernel.h"
+#include "isr.h"
 
 int cursor_x = 0;
 int cursor_y = 0;
@@ -31,12 +31,14 @@ void print(char* first, int len, int colour) {
 
 extern int main() {
 	i686_IDT_Initialise();
+    i686_ISR_Initialize();
     char str[] = "Hello, world!";
     print(&str[0], sizeof(str), 0x0f);
     char str2[] = " -from protected mode (VGA framebuffer)\n";
     print(&str2[0], sizeof(str2), 0x04);
     char str3[] = "test string 3";
     print(&str3[0], sizeof(str3), 0x0f);
+    __asm("int $0x4");
     return 0;
 }
 
