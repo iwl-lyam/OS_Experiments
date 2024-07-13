@@ -1,4 +1,8 @@
+git pull
+
+echo "assembling bootloader"
 nasm "boot.asm" -f bin -o "boot.bin"
+echo "assemnling support files"
 nasm "kernel_entry.asm" -f elf -o "kernel_entry.o"
 nasm "idt.asm" -f elf -o "idt_asm.o"
 echo "kernel compile"
