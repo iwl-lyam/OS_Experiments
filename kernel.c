@@ -28,6 +28,7 @@ extern int main() {
     print(&str[0], sizeof(str), 0x0f);
     char str2[] = " -from protected mode (VGA framebuffer)";
     print(&str2[0], sizeof(str2), 0x04);
+    char str3[] = "aaaaaaaaaaaaa                                                                                                                           very long string lol                                   test"
     return 0;
 }
 
