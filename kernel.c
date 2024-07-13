@@ -18,10 +18,10 @@ void print_char(char c, int colour) {
 
 void print(char* first, int len, int colour) {
 	for (int i = 0; i<len; i++) {
-        if ((*(first+i) == '\\') && (*(first+i+1) == 'n')) {
+        if (*(first+i) == 0x10) {
             cursor_y += 1;
             cursor_x = 0;
-            i += 2;
+            i++;
         }
 		print_char(*(first+i), colour);
 	}
