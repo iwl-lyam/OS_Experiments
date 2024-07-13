@@ -12,6 +12,7 @@ printLoop:
     jmp printLoop
 end:
 
+mov al, 0
 mov ah, 0x86      ; BIOS wait function
 mov cx, 0x000F    ; High word of 1,000,000 microseconds
 mov dx, 0x4240    ; Low word of 1,000,000 microseconds
