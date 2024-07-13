@@ -31,14 +31,14 @@ void print(char* first, int len, int colour) {
 
 extern int main() {
 	i686_IDT_Initialise();
-    i686_ISR_Initialize();
     char str[] = "Hello, world!";
     print(&str[0], sizeof(str), 0x0f);
+    i686_ISR_Initialize();
     char str2[] = " -from protected mode (VGA framebuffer)\n";
     print(&str2[0], sizeof(str2), 0x04);
+    __asm("int $0x4");
     char str3[] = "test string 3";
     print(&str3[0], sizeof(str3), 0x0f);
-    __asm("int $0x4");
     return 0;
 }
 
