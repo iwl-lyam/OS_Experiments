@@ -38,7 +38,7 @@ start:
     xor ax, ax          ; AX = 0 (used to get the tick count)
     int 0x1A            ; Call BIOS service to get the tick count
     mov bx, dx          ; Save initial tick count in BX
-    add bx, 18          ; Add approximately 18 ticks for a 1-second delay
+    add bx, 55          ; Add approximately 55 ticks for a 3-second delay
 
 wait_loop:
     xor ax, ax          ; AX = 0 (used to get the tick count)
@@ -108,7 +108,7 @@ start_protected_mode:
 
     jmp KERNEL_LOCATION
 
-msg: db "Hello, world! -from Real mode",0
+msg: db "Hello, world! -from Real mode",10,13,"Waiting for 3 seconds...",0
 
 times 510-($-$$) db 0
 db 0x55, 0xAA
