@@ -108,7 +108,7 @@ start_protected_mode:
 
     jmp KERNEL_LOCATION
 
-msg: db "Hello, world! -from Real mode",10,13,"Waiting for 3 seconds...",0
+msg: db 10,"Hello, world! -from Real mode (BIOS)",10,13,"Halting for 3 seconds...",0
 
 times 510-($-$$) db 0
 db 0x55, 0xAA
