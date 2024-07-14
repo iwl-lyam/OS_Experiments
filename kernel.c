@@ -1,6 +1,7 @@
 #include "idt.h"
 #include "kernel.h"
 #include "isr.h"
+#include "pic.h"
 
 int cursor_x = 0;
 int cursor_y = 0;
@@ -30,6 +31,8 @@ void print(char* first, int len, int colour) {
 }
 
 extern int main() {
+    PIC_remap(32, 40);
+    pic_disable();
 	i686_IDT_Initialise();
     char str[] = "Hello, world!";
     print(&str[0], sizeof(str), 0x0f);
