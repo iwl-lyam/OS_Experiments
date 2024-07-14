@@ -12,8 +12,10 @@ echo "kernel compile"
 i686-elf-gcc -ffreestanding -m32 -c "kernel.c" -o "kernel.o"
 i686-elf-gcc -ffreestanding -m32 -c "idt.c" -o "idt.o"
 i686-elf-gcc -ffreestanding -m32 -c "isr.c" -o "isr.o"
+i686-elf-gcc -ffreestanding -m32 -c "pic.c" -o "pic.o"
+i686-elf-gcc -ffreestanding -m32 -c "io.c" -o "io.o"
 echo "zeroes assembly"
 nasm "zeroes.asm" -f bin -o "zeroes.bin"
 echo "kernel link"
-i686-elf-ld -o "full_kernel.bin" -Ttext 0x1000 "kernel_entry.o" "idt.o" "isr.o" "isr_asm.o" "idt_asm.o" "kernel.o" --oformat binary
+i686-elf-ld -o "full_kernel.bin" -Ttext 0x1000 "kernel_entry.o" "idt.o" "pic.o" "io.o" "isr.o" "isr_asm.o" "idt_asm.o" "kernel.o" --oformat binary
 cat "boot.bin" "full_kernel.bin" "zeroes.bin"  > "OS.bin"
