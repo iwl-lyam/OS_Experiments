@@ -1,4 +1,5 @@
 #pragma once
+#include <stdint.h>
 
 static inline uint8_t inb(uint16_t port);
 static inline void io_wait(void);
